@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova — Australian Study Pathway Pre-Counsellor</title>
+<style>
+  :root{
+    --ink:#231B3F; --deep:#3A2A6B; --purple:#4B3A8F; --lav:#B8A9E0; --lav-soft:#EDE7FA;
+    --gold:#E0B441; --gold-soft:#F3DD9A; --paper:#FAF8FF; --star:#FFE9A8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--paper);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #5a45a8 0%, transparent 60%),
+      radial-gradient(900px 500px at 80% 110%, #2c2052 0%, transparent 55%),
+      linear-gradient(160deg,#2a1f54 0%, #1c1539 100%);
+    min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
+    padding:24px; overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(1.4px 1.4px at 20% 30%, rgba(255,255,255,.55), transparent),
+      radial-gradient(1.2px 1.2px at 70% 20%, rgba(255,255,255,.45), transparent),
+      radial-gradient(1.6px 1.6px at 40% 70%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1.2px 1.2px at 85% 65%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1.3px 1.3px at 12% 80%, rgba(255,255,255,.35), transparent),
+      radial-gradient(1.1px 1.1px at 60% 90%, rgba(255,255,255,.3), transparent);
+  }
+  .card{
+    position:relative;z-index:1;width:100%;max-width:580px;margin:auto;
+    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+    border:1px solid rgba(184,169,224,.35);border-radius:26px;
+    padding:36px 32px 30px;backdrop-filter:blur(6px);
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.7);
+  }
+  .brand{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:5px}
+  .brand .mark{width:30px;height:30px;border-radius:50%;
+    background:radial-gradient(circle at 50% 45%, var(--star), var(--gold) 55%, #b9892a 100%);
+    box-shadow:0 0 22px 4px rgba(224,180,65,.55);}
+  .brand h1{font-size:1.42rem;letter-spacing:.14em;font-weight:700;
+    background:linear-gradient(90deg,#fff,var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .by{text-align:center;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lav);margin-bottom:24px}
+
+  .stage{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
+  .orbit{position:relative;width:140px;height:140px;display:grid;place-items:center}
+  .ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(184,169,224,.25)}
+  svg.prog{position:absolute;inset:0;transform:rotate(-90deg)}
+  svg.prog circle{fill:none;stroke-width:6;stroke-linecap:round}
+  .fill{stroke:url(#grad);transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)}
+  .nova{width:44px;height:44px;border-radius:50%;
+    background:radial-gradient(circle at 50% 45%, #fff, var(--star) 40%, var(--gold) 70%, #a9781f 100%);
+    box-shadow:0 0 calc(8px + var(--glow,0) * 34px) calc(2px + var(--glow,0) * 10px) rgba(224,180,65,.6);
+    transform:scale(calc(.6 + var(--glow,0) * .7));
+    transition:transform .7s cubic-bezier(.2,.8,.2,1), box-shadow .7s ease;}
+  .xp{margin-top:13px;font-size:.8rem;letter-spacing:.06em;color:var(--gold-soft)}
+  .xp b{color:#fff}
+
+  h2{font-size:1.28rem;line-height:1.3;margin-bottom:6px;font-weight:650}
+  .sub{color:var(--lav);font-size:.9rem;margin-bottom:20px}
+  .q-count{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);margin-bottom:10px}
+
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{text-align:left;cursor:pointer;background:rgba(255,255,255,.05);
+    border:1.5px solid rgba(184,169,224,.3);color:var(--paper);
+    padding:14px 16px;border-radius:13px;font-size:.95rem;font-family:inherit;transition:.18s ease;}
+  .opt:hover{border-color:var(--gold);background:rgba(224,180,65,.12);transform:translateY(-1px)}
+  .opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .opt small{display:block;color:var(--lav);font-size:.76rem;margin-top:3px}
+
+  .btn{cursor:pointer;font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));border:none;border-radius:13px;
+    padding:15px 26px;width:100%;box-shadow:0 10px 28px -10px rgba(224,180,65,.6);transition:.18s ease;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 34px -10px rgba(224,180,65,.7)}
+  .btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+
+  .center{text-align:center}
+
+  /* Result */
+  .badge-pop{display:flex;flex-direction:column;align-items:center;margin-bottom:16px}
+  .badge{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;
+    background:radial-gradient(circle at 50% 40%, var(--star), var(--gold) 60%, #9c6f1c);
+    box-shadow:0 0 30px 6px rgba(224,180,65,.5);font-size:1.8rem;
+    animation:pop .6s cubic-bezier(.2,1.4,.4,1) both;}
+  @keyframes pop{from{transform:scale(0) rotate(-25deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+  .badge-name{margin-top:9px;font-weight:700;letter-spacing:.04em;color:var(--gold-soft);font-size:.9rem}
+
+  .block{background:rgba(184,169,224,.1);border:1px solid rgba(184,169,224,.28);
+    border-radius:14px;padding:14px 15px;margin-bottom:11px}
+  .block .lbl{font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-soft);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+  .block h3{font-size:1.0rem;margin-bottom:3px;color:#fff}
+  .block p{font-size:.86rem;color:var(--lav-soft);line-height:1.5}
+  .tag{display:inline-block;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);background:var(--gold-soft);padding:3px 10px;border-radius:20px;font-weight:700;margin-bottom:9px}
+
+  .listrow{display:flex;align-items:flex-start;gap:9px;font-size:.86rem;color:var(--lav-soft);padding:5px 0;line-height:1.4}
+  .listrow .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none;margin-top:6px}
+  .listrow b{color:#fff;font-weight:600}
+
+  .fee{display:flex;align-items:baseline;gap:8px;margin:2px 0 4px}
+  .fee .amt{font-size:1.35rem;font-weight:700;color:var(--gold-soft)}
+  .fee .per{font-size:.78rem;color:var(--lav)}
+  .note{font-size:.78rem;color:var(--lav);line-height:1.45;margin-top:6px;padding-top:8px;border-top:1px dashed rgba(184,169,224,.3)}
+
+  .disclaimer{font-size:.72rem;color:rgba(184,169,224,.75);line-height:1.5;text-align:center;
+    margin-top:16px;border-top:1px solid rgba(184,169,224,.2);padding-top:13px}
+  .btn.ghost{background:transparent;color:var(--lav);box-shadow:none;border:1.5px solid rgba(184,169,224,.4);margin-top:11px}
+  .btn.ghost:hover{color:#fff;border-color:var(--gold)}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+  @media (max-width:480px){.card{padding:28px 20px 24px}h2{font-size:1.14rem}}
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="brand"><span class="mark"></span><h1>NOVA</h1></div>
+    <div class="by">NXT Chapter · Australian Study Pathway Pre-Counsellor</div>
+
+    <div class="stage">
+      <div class="orbit">
+        <div class="ring"></div>
+        <svg class="prog" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
+          <defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#E0B441"/><stop offset="100%" stop-color="#F3DD9A"/>
+          </linearGradient></defs>
+          <circle cx="70" cy="70" r="64" stroke="rgba(184,169,224,.2)" stroke-width="6" fill="none"/>
+          <circle class="fill" id="ring" cx="70" cy="70" r="64" stroke-dasharray="402" stroke-dashoffset="402"/>
+        </svg>
+        <div class="nova" id="nova" style="--glow:0"></div>
+      </div>
+      <div class="xp">XP <b id="xp">0</b> / 100 &nbsp;·&nbsp; <span id="lvl">Cadet</span></div>
+    </div>
+
+    <div id="screen"></div>
+  </div>
+
+<script>
+(function(){
+  const screen=document.getElementById('screen');
+  const ring=document.getElementById('ring');
+  const nova=document.getElementById('nova');
+  const xpEl=document.getElementById('xp');
+  const lvlEl=document.getElementById('lvl');
+  const CIRC=402;
+
+  const questions=[
+    { key:'qual', q:'What is the student\u2019s highest qualification?',
+      opts:[
+        ['UEC (Unified Examination Certificate)','uec'],
+        ['STPM or A-Levels','alevel'],
+        ['Diploma','diploma'],
+        ['SPM / O-Levels','spm'],
+      ]},
+    { key:'grades', q:'How are their results overall?',
+      opts:[['Excellent \u2014 top grades','high'],['Good \u2014 solid passes','mid'],['Average \u2014 some weaker areas','low']]},
+    { key:'field', q:'Which field do they want to study?',
+      opts:[
+        ['Business & Management','business'],
+        ['Engineering & IT','engit'],
+        ['Health Sciences','health'],
+        ['Design & Creative Media','design'],
+      ]},
+    { key:'english', q:'English test (IELTS / equivalent)?',
+      opts:[['Has a score','have'],['Planning to take it','plan'],['Not yet / unsure','none']]},
+    { key:'budget', q:'Approximate yearly budget for tuition?',
+      opts:[
+        ['Up to A$40,000','b1'],
+        ['A$40,000 \u2013 A$55,000','b2'],
+        ['A$55,000+ / flexible','b3'],
+      ]},
+  ];
+
+  const levels=['Cadet','Explorer','Navigator','Pathfinder','Trailblazer','Pathway Pioneer'];
+  const answers={}; let idx=0;
+
+  // ---- Reference data (indicative 2026 international fees, AUD/year) ----
+  const FIELDS={
+    business:{ name:'Business & Management', degree:'Bachelor of Commerce / Business',
+      unis:['Monash University','University of Melbourne','UNSW Sydney','RMIT University'],
+      feeLo:35000, feeHi:48000 },
+    engit:{ name:'Engineering & IT', degree:'Bachelor of Engineering (Honours) / Information Technology',
+      unis:['University of Melbourne','Monash University','UNSW Sydney','UTS Sydney'],
+      feeLo:40000, feeHi:55000 },
+    health:{ name:'Health Sciences', degree:'Bachelor of Health Sciences / Nursing',
+      unis:['Monash University','University of Sydney','Deakin University','UTS Sydney'],
+      feeLo:40000, feeHi:52000 },
+    design:{ name:'Design & Creative Media', degree:'Bachelor of Design / Communication Design',
+      unis:['RMIT University','UTS Sydney','Swinburne University','Monash University'],
+      feeLo:33000, feeHi:42000 },
+  };
+  // Foundation pathway providers mapped to the university they feed (indicative 2026 AUD/year)
+  const FOUNDATION={
+    'University of Melbourne':{ provider:'Trinity College Foundation Studies', fee:44540 },
+    'Monash University':{ provider:'Monash College (Monash University Foundation Year)', fee:42300 },
+    'UNSW Sydney':{ provider:'UNSW College Foundation Studies', fee:42000 },
+    'University of Sydney':{ provider:'Taylors College (USyd Foundation Program)', fee:44500 },
+    'RMIT University':{ provider:'RMIT Foundation Studies', fee:34000 },
+    'UTS Sydney':{ provider:'UTS College Foundation Studies', fee:33500 },
+    'Deakin University':{ provider:'Deakin College', fee:33000 },
+    'Swinburne University':{ provider:'Swinburne Foundation (UniLink)', fee:32000 },
+  };
+  const fmt=n=>'A$'+n.toLocaleString('en-AU');
+
+  function setProgress(step){
+    const pct=step/questions.length;
+    ring.style.strokeDashoffset=CIRC*(1-pct);
+    nova.style.setProperty('--glow',pct.toFixed(3));
+    xpEl.textContent=Math.round(pct*100);
+    lvlEl.textContent=levels[step];
+  }
+
+  function renderIntro(){
+    screen.innerHTML=`
+      <h2>Match a student to an Australian pathway.</h2>
+      <p class="sub">Answer 5 quick questions. Nova suggests an entry route, a course area, real fee guidance and a clear next step.</p>
+      <button class="btn" id="start">Start the pathway check</button>`;
+    document.getElementById('start').onclick=()=>{idx=0;renderQuestion();};
+  }
+
+  function renderQuestion(){
+    const item=questions[idx];
+    screen.innerHTML=`
+      <div class="q-count">Question ${idx+1} of ${questions.length}</div>
+      <h2>${item.q}</h2>
+      <div class="opts">${item.opts.map(([l,v])=>`<button class="opt" data-val="${v}">${l}</button>`).join('')}</div>`;
+    screen.querySelectorAll('.opt').forEach(b=>{
+      b.onclick=()=>{answers[item.key]=b.dataset.val;idx++;setProgress(idx);
+        idx<questions.length?renderQuestion():renderThinking();};
+    });
+  }
+
+  function renderThinking(){
+    screen.innerHTML=`<div class="center"><h2>Nova is matching the profile\u2026</h2>
+      <p class="sub">Checking entry route, course area, fees and English requirements.</p></div>`;
+    setTimeout(renderResult,1300);
+  }
+
+  function routeType(){
+    const {qual,grades}=answers;
+    if((qual==='alevel'||qual==='uec') && grades!=='low') return 'direct';
+    if(qual==='diploma') return 'credit';
+    return 'foundation'; // SPM, or weaker results
+  }
+
+  function englishNote(){
+    if(answers.english==='have') return 'Student has an English score \u2014 check it meets the course requirement (usually IELTS 6.0\u20136.5; some courses higher).';
+    if(answers.english==='plan') return 'Book IELTS early. Most courses need an overall band of 6.0\u20136.5.';
+    return 'IELTS is required for admission and the visa \u2014 plan it soon (usually band 6.0\u20136.5).';
+  }
+
+  function budgetNote(feeLo){
+    const map={b1:40000,b2:55000,b3:99000};
+    const cap=map[answers.budget]||0;
+    if(cap<feeLo) return 'Budget looks tight for this field. Consider regional universities, scholarships (often 15\u201350% waivers), or more affordable campuses (e.g. Adelaide, Tasmania).';
+    return 'Budget appears workable for this field \u2014 confirm the exact course fee on the university website.';
+  }
+
+  function renderResult(){
+    const f=FIELDS[answers.field];
+    const route=routeType();
+    const avgFee=Math.round((f.feeLo+f.feeHi)/2);
+    let html=`
+      <div class="badge-pop">
+        <div class="badge">\u2605</div>
+        <div class="badge-name">Profile matched \u00b7 Pathway Pioneer</div>
+      </div>`;
+
+    if(route==='foundation'){
+      // pick foundation providers for the top 2 universities in the field
+      const picks=f.unis.filter(u=>FOUNDATION[u]).slice(0,2).map(u=>FOUNDATION[u]);
+      html+=`
+      <div class="block">
+        <span class="tag">Recommended route</span>
+        <h3>Foundation year \u2192 Bachelor\u2019s</h3>
+        <p>The student\u2019s profile suits a 1-year Foundation programme, which then gives entry into first year of a bachelor\u2019s degree.</p>
+      </div>
+      <div class="block">
+        <div class="lbl">Foundation pathway schools</div>
+        ${picks.map(p=>`<div class="listrow"><span class="dot"></span><span><b>${p.provider}</b><br>Indicative ${fmt(p.fee)}/yr (1 year)</span></div>`).join('')}
+        <div class="note">After Foundation, the student progresses to a 3-year bachelor\u2019s in ${f.name} at the linked university.</div>
+      </div>`;
+    } else if(route==='credit'){
+      html+=`
+      <div class="block">
+        <span class="tag">Recommended route</span>
+        <h3>Bachelor\u2019s with possible credit</h3>
+        <p>A relevant diploma may earn credit \u2014 the student could enter beyond first year at some universities. Confirm credit on a case-by-case basis.</p>
+      </div>`;
+    } else {
+      html+=`
+      <div class="block">
+        <span class="tag">Recommended route</span>
+        <h3>Direct entry to Bachelor\u2019s</h3>
+        <p>This qualification can be considered for direct first-year entry at many Australian universities.</p>
+      </div>`;
+    }
+
+    // Course + universities
+    html+=`
+      <div class="block">
+        <div class="lbl">Indicative course &amp; universities</div>
+        <div class="listrow"><span class="dot"></span><span><b>${f.degree}</b> in ${f.name}</span></div>
+        ${f.unis.map(u=>`<div class="listrow"><span class="dot"></span><span>${u}</span></div>`).join('')}
+        <div class="note">Course names vary by university. Some specialisations may not appear under the exact title \u2014 always confirm the live course page and entry score on the university website.</div>
+      </div>`;
+
+    // Fees
+    html+=`
+      <div class="block">
+        <div class="lbl">Indicative tuition (international, 2026)</div>
+        <div class="fee"><span class="amt">${fmt(f.feeLo)} \u2013 ${fmt(f.feeHi)}</span><span class="per">per year</span></div>
+        <p>Bachelor\u2019s in ${f.name}. Go8 universities sit at the higher end. Medicine/clinical health are higher again.</p>
+        <div class="note">${budgetNote(f.feeLo)}</div>
+      </div>`;
+
+    // English + next step
+    html+=`
+      <div class="block">
+        <div class="lbl">English</div>
+        <p>${englishNote()}</p>
+      </div>
+      <div class="block">
+        <div class="lbl">Next step</div>
+        <p>Book a full counselling session with an NXT Chapter advisor to confirm eligibility, exact course, live fees and scholarships.</p>
+      </div>
+      <button class="btn" id="again">Assess another student</button>
+      <p class="disclaimer">Demonstration tool for training. Fees are indicative 2026 ranges and change yearly \u2014 always verify the exact course and fee on the university\u2019s official website. Not an official admission or financial decision.</p>`;
+
+    screen.innerHTML=html;
+    document.getElementById('again').onclick=()=>{
+      for(const k in answers) delete answers[k];
+      idx=0;setProgress(0);renderIntro();
+    };
+  }
+
+  setProgress(0);
+  renderIntro();
+})();
+</script>
+</body>
+</html>
